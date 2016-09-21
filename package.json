@@ -1,0 +1,22 @@
+{
+  "name": "testing_demo",
+  "version": "1.0.0",
+  "description": "testing with unit.js mocha",
+  "main": "test.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "unit.js",
+    "mocha"
+  ],
+  "author": "Alan Tai",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mocha": "^3.0.2",
+    "supertest": "^2.0.0",
+    "unit.js": "^2.0.0"
+  }
+}
