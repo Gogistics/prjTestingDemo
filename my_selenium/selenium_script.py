@@ -1,33 +1,61 @@
 # -*- coding: utf-8 -*-
-import time, datetime
+import time, datetime, pytz
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+from multiprocessing.dummy import Pool as ThreadsPool
  
  
-def init_driver():
-  driver = webdriver.Chrome('/Users/alantai/Desktop/my_selenium_fabric/chromedriver')
-  driver.wait = WebDriverWait(driver, 5)
-  return driver
+def init_driver(tag = None):
+  driver_info = {}
+  if tag == 'chrome':
+    driver_info.update({'browser': 'Chrome'})
+    driver_info.update({'query': 'steelhead'})
+    driver = webdriver.Chrome('/Users/alantai/Desktop/my_selenium_fabric/chromedriver')
+    driver.wait = WebDriverWait(driver, 5)
+    driver_info.update({'webdriver': driver})
 
-def test(driver, query):
+  elif tag == 'firefox':
+    driver_info.update({'browser': 'Firefox'})
+    driver_info.update({'query': 'steelhead'})
+    driver = webdriver.Firefox('/Users/alantai/Desktop/my_selenium_fabric/')
+    driver.wait = WebDriverWait(driver, 5)
+    driver_info.update({'webdriver': driver})
+
+  return driver_info
+
+def test(info_set = None):
+  driver = info_set['webdriver']
+  query = info_set['query']
+  browser = info_set['browser']
+
   driver.get('http://www.riverbed.com/products/steelhead/index.html')
   timestamp = str(time.time()).split('.')[0]
-  test_file = open('./reports/test-report-{timestamp}.txt'.format(timestamp=timestamp), 'a')
+  test_file = open('./reports/{browser}-test-report-{timestamp}.txt'.format( browser = browser, timestamp = timestamp), 'a')
 
   print '\n\n\n'
-  print '<=== Start Test Automation ===>'
+  print '<=== Start Test Automation for {browser} ===>'.format(browser = browser)
   print '\n'
 
   # write to report
-  test_file.write('Test Report')
+  fmt = '%Y-%m-%d %H:%M:%S %Z%z'
+  # current_datetime = datetime.datetime.now(tz=pytz.utc).strftime(fmt) # for UTC
+  pdt = pytz.timezone('US/Pacific-New')
+  current_datetime = datetime.datetime.now().replace(tzinfo=pdt).strftime(fmt) # for PDT
+  test_file.write('Test Report for {browser}'.format(browser = browser))
   test_file.write('\n')
   test_file.write('===========')
+  test_file.write('\n')
+  test_file.write('Datetime ({pdt}): {current_datetime}'.format(pdt=pdt, current_datetime = current_datetime))
+  test_file.write('\n')
+  test_file.write('QA: {test_engineer}'.format(test_engineer='Alan Tai'))
   test_file.write('\n\n\n')
 
   try:
+    test_file.write('Test Cases:')
+    test_file.write('\n')
     # check title
     print '<--- Check Title --->'
     print driver.title
@@ -129,13 +157,18 @@ def test(driver, query):
     time.sleep(3)
 
   except TimeoutException:
-    print("Box or Button not found in riverbed.com")
+    print("Errors")
   finally:
+    time.sleep(5)
+    driver.quit()
     test_file.close()
- 
- 
+
+def test_tasks():
+  driver_tags = ['chrome', 'firefox']
+  drivers = [ init_driver(tag) for tag in driver_tags ]
+
+  pool = ThreadsPool(2)
+  results = pool.map(test, drivers)
+
 if __name__ == "__main__":
-  driver = init_driver()
-  test(driver, "stealhead")
-  time.sleep(5)
-  driver.quit()
+  test_tasks()
