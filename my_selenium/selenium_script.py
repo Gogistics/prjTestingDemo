@@ -6,13 +6,13 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from multiprocessing.dummy import Pool as ThreadsPool
- 
- 
+
+
 def init_driver(tag = None):
   driver_info = {}
   if tag == 'chrome':
     driver_info.update({'browser': 'Chrome'})
-    driver_info.update({'query': 'steelhead'})
+    driver_info.update({'query': 'steelfusion'})
     driver = webdriver.Chrome('/Users/alantai/Desktop/my_selenium_fabric/chromedriver')
     driver.wait = WebDriverWait(driver, 5)
     driver_info.update({'webdriver': driver})
@@ -24,16 +24,19 @@ def init_driver(tag = None):
     driver.wait = WebDriverWait(driver, 5)
     driver_info.update({'webdriver': driver})
 
+  driver_info.update({'url': 'http://www.riverbed.com/products/steelhead/index.html'})
+
   return driver_info
 
 def test(info_set = None):
   driver = info_set['webdriver']
   query = info_set['query']
   browser = info_set['browser']
+  url = info_set['url']
 
-  driver.get('http://www.riverbed.com/products/steelhead/index.html')
+  driver.get(url)
   timestamp = str(time.time()).split('.')[0]
-  test_file = open('./reports/{browser}-test-report-{timestamp}.txt'.format( browser = browser, timestamp = timestamp), 'a')
+  test_file = open('./my_selenium/reports/{browser}-test-report-{timestamp}.txt'.format( browser = browser, timestamp = timestamp), 'a')
 
   print '\n\n\n'
   print '<=== Start Test Automation for {browser} ===>'.format(browser = browser)
@@ -158,6 +161,7 @@ def test(info_set = None):
 
   except TimeoutException:
     print("Errors")
+
   finally:
     time.sleep(5)
     driver.quit()
