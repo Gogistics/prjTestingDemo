@@ -59,6 +59,9 @@ def test(info_set = None):
   try:
     test_file.write('Test Cases:')
     test_file.write('\n')
+    test_file.write('===========')
+    test_file.write('\n\n')
+        
     # check title
     print '<--- Check Title --->'
     print driver.title
