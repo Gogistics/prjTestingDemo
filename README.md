@@ -13,4 +13,6 @@ Ref.
 
 [Chrome Driver](https://sites.google.com/a/chromium.org/chromedriver/)
 
+[Testing Your Code](http://docs.python-guide.org/en/latest/writing/tests/)
+
 [unittest — Unit testing framework](https://docs.python.org/2/library/unittest.html)
