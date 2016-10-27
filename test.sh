@@ -1,6 +1,6 @@
 #!/bin/bash
 # Program:
-# renew docker contaner
+# Test Automation with Node.js modules and Selenium
 # History:
 # 09/21/2016
 export PATH=$PATH:/Users/alantai/Desktop/my_selenium_fabric/
