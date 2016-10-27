@@ -91,7 +91,7 @@ def test(info_set = None):
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 
     test_reporter.write_to_file('Check Tag Name of Element', search_result.tag_name)
-    test_reporter.write_to_file('Check Parent of Element', str(search_result.location))
+    test_reporter.write_to_file('Check Location of Element', str(search_result.location))
     test_reporter.write_to_file('Check Size of Element', str(search_result.size))
 
     search_btn.click()
@@ -105,12 +105,13 @@ def test(info_set = None):
       driver.switch_to_window(handle)
       time.sleep(3)
 
-
+  # exception handler
   except TimeoutException:
     print("Timeout!")
   except:
     print("Unexpected error:", sys.exc_info()[0])
 
+  # quite driver and close file
   finally:
     time.sleep(5)
     driver.quit()
