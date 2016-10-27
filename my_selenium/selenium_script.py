@@ -57,7 +57,6 @@ def test(info_set = None):
 
   try:
     test_reporter.write_to_file('Check Title', u''.join(driver.title).encode('utf-8'))
-
     test_reporter.write_to_file('Check Cookies', str(driver.get_cookies()))
 
     # click event
@@ -71,8 +70,10 @@ def test(info_set = None):
     time.sleep(3)
 
     driver.set_window_position(0, 0)
-    driver.set_window_size(480, 720)
+    driver.set_window_size(480, 720) # smart phone
     time.sleep(3)
+    timestamp = str(time.time()).split('.')[0]
+    test_reporter.generate_screenshot(timestamp, driver, 'mobile', '480_720')
 
     # test search mechanism
     search_field = driver.find_element_by_xpath('//*[@id="query"]')
@@ -96,9 +97,13 @@ def test(info_set = None):
 
     search_btn.click()
     time.sleep(3)
+
+    # reset size to tablet size
     driver.set_window_position(0, 0)
-    driver.set_window_size(768, 1024)
+    driver.set_window_size(768, 1024) # tablet
     time.sleep(3)
+    timestamp = str(time.time()).split('.')[0]
+    test_reporter.generate_screenshot(timestamp, driver, 'tablet', '768_1024')
 
     # test window switching
     for handle in driver.window_handles:

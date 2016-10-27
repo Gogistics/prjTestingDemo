@@ -35,5 +35,8 @@ class TestReport(object):
     self.__test_report.write(test_info)
     self.__test_report.write('\n\n')
 
+  def generate_screenshot(self, timestamp, driver, mode, criteria):
+    driver.get_screenshot_as_file('./my_selenium/reports/screenshots/{browser}-{mode}-{criteria}-screenshot-{timestamp}.png'.format(browser = self.__browser, mode = mode, criteria = criteria, timestamp = timestamp))
+
   def close_file(self):
     self.__test_report.close()
