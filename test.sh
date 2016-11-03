@@ -3,8 +3,7 @@
 # Test Automation with Node.js modules and Selenium
 # History:
 # 09/21/2016
-export PATH=$PATH:/Users/alantai/Desktop/my_selenium_fabric/
-
+export PATH=$PATH:$(pwd)/my_drivers/
 option="${1}"
 
 case ${option} in

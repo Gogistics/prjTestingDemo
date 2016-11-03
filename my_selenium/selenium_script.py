@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import time, datetime, pytz, sys
+import time, datetime, pytz, sys, os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -13,13 +13,13 @@ def init_driver_info(tag = None):
   driver_info = {}
   if tag == 'chrome':
     driver_info.update({'browser': 'Chrome'})
-    driver = webdriver.Chrome('/Users/alantai/Desktop/my_selenium_fabric/chromedriver')
+    driver = webdriver.Chrome('{path}/my_drivers/chromedriver'.format(path=os.getcwd()))
     driver.wait = WebDriverWait(driver, 5)
     driver_info.update({'webdriver': driver})
 
   elif tag == 'firefox':
     driver_info.update({'browser': 'Firefox'})
-    driver = webdriver.Firefox('/Users/alantai/Desktop/my_selenium_fabric/')
+    driver = webdriver.Firefox('{path}/my_drivers/'.format(path=os.getcwd()))
     driver.wait = WebDriverWait(driver, 5)
     driver_info.update({'webdriver': driver})
 

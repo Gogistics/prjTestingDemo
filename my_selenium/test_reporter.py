@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
-# incomplete
+import os
 
 class TestReport(object):
   ''' Test Report for generating test reports '''
   def __init__(self, browser, timestamp):
     self.__browser = browser
     self.__timestamp = timestamp
-    self.__test_report = open('./my_selenium/reports/{browser}-test-report-{timestamp}.txt'.format( browser = browser, timestamp = timestamp), 'a')
+    if not os.path.exists('{path}/my_selenium/reports/'.format(path=os.getcwd())):
+      os.makedirs('{path}/my_selenium/reports'.format(path=os.getcwd()))
+
+    self.__test_report = open('{path}/my_selenium/reports/{browser}-test-report-{timestamp}.txt'.format( path = os.getcwd(), browser = browser, timestamp = timestamp), 'a')
 
   def write_to_file_meta(self, timezone, current_datetime, test_engineer):
     self.__test_report.write('Test Report for {browser}'.format(browser = self.__browser))
